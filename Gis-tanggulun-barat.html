@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="id" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebGIS | Desa Tanggulun Barat</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      #map {
+        height: 100vh1;
+        min-height: 520px;
+        width: 100%;
+        border-radius: 12px;
+        z-index: 1;
+      }
+      .leaflet-popup-content-wrapper,
+      .leaflet-popup-tip {
+        background-color: #212529;
+        color: #f8f9fa;
+        border: 1px solid #495057;
+      }
+      .label-batas {
+        background: rgba(13, 17, 23, 0.82);
+        border: 1px solid #495057;
+        color: #e9ecef;
+        padding: 0px 0px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        white-space: nowrap;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-secondary-subtle">
+      <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold" href="index.html"> <i class="bi bi-arrow-left me-2 text-primary"></i>Deta<span class="text-primary">.dev</span> </a>
+        <span class="navbar-text text-light fw-semibold"> <i class="bi bi-geo-alt-fill text-danger me-1"></i> Sistem Informasi Geografis (WebGIS) — Desa Tanggulun Barat </span>
+      </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <div class="container-fluid px-4 py-4">
+      <div class="row g-4">
+        <!-- Panel Kiri: Data Profil & Batas Wilayah -->
+        <div class="col-lg-4 col-xl-3">
+          <div class="card bg-body-tertiary border-secondary-subtle h-100">
+            <div class="card-body overflow-auto" style="max-height: 78vh">
+              <span class="badge bg-info text-dark mb-2">GIS & Pemetaan Digital</span>
+              <h4 class="card-title fw-bold mb-1">Desa Tanggulun Barat</h4>
+              <p class="small text-secondary mb-3">Kecamatan Kalijati, Kabupaten Subang</p>
+
+              <!-- Ringkasan Statistik -->
+              <div class="row g-2 mb-3 text-center">
+                <div class="col-6">
+                  <div class="p-2 rounded bg-dark border border-secondary-subtle">
+                    <small class="text-secondary d-block">Luas Wilayah</small>
+                    <span class="fw-bold text-primary">± 901 Ha</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-2 rounded bg-dark border border-secondary-subtle">
+                    <small class="text-secondary d-block">Penduduk</small>
+                    <span class="fw-bold text-info">± 6.788 Jiwa</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark border border-secondary-subtle">
+                    <small class="text-secondary d-block">Dusun</small>
+                    <span class="fw-bold">3</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark border border-secondary-subtle">
+                    <small class="text-secondary d-block">RW</small>
+                    <span class="fw-bold">6</span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="p-2 rounded bg-dark border border-secondary-subtle">
+                    <small class="text-secondary d-block">RT</small>
+                    <span class="fw-bold">25</span>
+                  </div>
+                </div>
+              </div>
+
+              <p class="small text-secondary mb-3"><i class="bi bi-people-fill text-primary me-1"></i> Total Kepala Keluarga: <strong class="text-light">± 2.017 KK</strong></p>
+
+              <!-- Tabel Batas Wilayah -->
+              <h6 class="fw-bold small text-uppercase text-secondary mb-2">Batas Wilayah Administrasi</h6>
+              <table class="table table-sm table-dark table-bordered border-secondary-subtle small mb-3">
+                <tbody>
+                  <tr>
+                    <td class="text-secondary">Utara</td>
+                    <td class="fw-semibold">Desa Lengkong</td>
+                  </tr>
+                  <tr>
+                    <td class="text-secondary">Selatan</td>
+                    <td class="fw-semibold">Desa Sampih</td>
+                  </tr>
+                  <tr>
+                    <td class="text-secondary">Barat</td>
+                    <td class="fw-semibold">Desa Jalupang</td>
+                  </tr>
+                  <tr>
+                    <td class="text-secondary">Timur</td>
+                    <td class="fw-semibold">Desa Tanggulun Timur</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- Mata Pencaharian Utama -->
+              <h6 class="fw-bold small text-uppercase text-secondary mb-2">Mata Pencaharian Utama</h6>
+              <div class="d-flex flex-wrap gap-1 mb-3">
+                <span class="badge bg-secondary">Buruh Pabrik</span>
+                <span class="badge bg-secondary">PNS</span>
+                <span class="badge bg-secondary">UMKM Rumah Tangga</span>
+                <span class="badge bg-secondary">Peternak</span>
+              </div>
+
+              <hr class="border-secondary-subtle" />
+
+              <!-- Navigasi Titik Lokasi -->
+              <h6 class="fw-bold small text-uppercase text-secondary mb-2">Navigasi Titik Fasilitas</h6>
+              <div class="list-group list-group-flush" id="daftar-lokasi"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel Kanan: Peta Interaktif -->
+        <div class="col-lg-8 col-xl-9">
+          <div class="card bg-body-tertiary border-secondary-subtle p-2">
+            <div id="map"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+      // 1. Pusat Peta Desa Tanggulun Barat, Kec. Kalijati, Kab. Subang
+      const pusatDesa = [-6.5335, 107.694];
+      const map = L.map("map").setView(pusatDesa, 14);
+
+      // 2. Layer Peta Jalan (CARTO Voyager - Bebas Blokir Lokal) & Citra Satelit (Esri)
+      const petaJalan = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "&copy; OpenStreetMap contributors",
+      });
+
+      const citraSatelit = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+        maxZoom: 19,
+        attribution: "&copy; Esri Satellite",
+      });
+
+      petaJalan.addTo(map);
+
+      L.control
+        .layers({
+          "Peta Jalan": petaJalan,
+          "Citra Satelit": citraSatelit,
+        })
+        .addTo(map);
+
+      // 3. Polygon Batas Wilayah Desa Tanggulun Barat (± 901 Hektar)
+      const koordinatBatas = [
+        [-6.5175, 107.6845],
+        [-6.516, 107.6965],
+        [-6.521, 107.7045],
+        [-6.5335, 107.7055],
+        [-6.5485, 107.702],
+        [-6.5505, 107.6895],
+        [-6.5415, 107.6825],
+        [-6.5285, 107.682],
+      ];
+
+      const polygonDesa = L.polygon(koordinatBatas, {
+        color: "#0d6efd",
+        fillColor: "#0d6efd",
+        fillOpacity: 0.14,
+        weight: 2.5,
+        dashArray: "6, 4",
+      }).addTo(map);
+
+      polygonDesa.bindPopup(`
+            <div style="min-width: 210px;">
+                <span class="badge bg-info text-dark mb-1">Wilayah Administrasi</span>
+                <h6 class="fw-bold mb-1">Desa Tanggulun Barat</h6>
+                <p class="small mb-1">Luas: <strong>± 901 Hektar</strong><br>
+                Administrasi: <strong>3 Dusun, 6 RW, 25 RT</strong><br>
+                Penduduk: <strong>± 6.788 Jiwa (± 2.017 KK)</strong></p>
+            </div>
+        `);
+
+      // 4. Label Desa Batas di 4 Penjuru Mata Angin
+      const batasTetangga = [
+        { nama: "⬆ Utara: Desa Lengkong", posisi: [-6.513, 107.694] },
+        { nama: "⬇ Selatan: Desa Sampih", posisi: [-6.554, 107.694] },
+        { nama: "⬅ Barat: Desa Jalupang", posisi: [-6.5335, 107.6745] },
+        { nama: "➡ Timur: Desa Tanggulun Timur", posisi: [-6.5335, 107.7135] },
+      ];
+
+      batasTetangga.forEach((batas) => {
+        L.marker(batas.posisi, {
+          icon: L.divIcon({
+            className: "",
+            html: `<div class="label-batas">${batas.nama}</div>`,
+            iconSize: [160, 24],
+            iconAnchor: [80, 12],
+          }),
+          interactive: false,
+        }).addTo(map);
+      });
+
+      // 5. Titik Fasilitas & Pembagian Wilayah Dusun
+      const titikLokasi = [
+        {
+          nama: "Kantor Desa Tanggulun Barat",
+          kategori: "Pemerintahan",
+          koordinat: [-6.5318, 107.6942],
+          info: "Pusat pemerintahan desa, pelayanan warga (6 RW / 25 RT).",
+        },
+        {
+          nama: "Wilayah Dusun I",
+          kategori: "Pembagian Dusun",
+          koordinat: [-6.5245, 107.6925],
+          info: "Kawasan permukiman bagian utara (berbatasan dengan Desa Lengkong).",
+        },
+        {
+          nama: "Wilayah Dusun II",
+          kategori: "Pembagian Dusun",
+          koordinat: [-6.5335, 107.6968],
+          info: "Kawasan tengah desa & sentra UMKM rumah tangga.",
+        },
+        {
+          nama: "Wilayah Dusun III",
+          kategori: "Pembagian Dusun",
+          koordinat: [-6.5425, 107.692],
+          info: "Kawasan selatan & lahan peternakan warga (berbatasan dengan Desa Sampih).",
+        },
+        {
+          nama: "Sarana Pendidikan & Ibadah",
+          kategori: "Fasilitas Umum",
+          koordinat: [-6.5302, 107.6915],
+          info: "Fasilitas sekolah dasar dan masjid jami masyarakat setempat.",
+        },
+      ];
+
+      const daftarContainer = document.getElementById("daftar-lokasi");
+
+      titikLokasi.forEach((item) => {
+        const marker = L.marker(item.koordinat).addTo(map);
+        marker.bindPopup(`
+                <div style="min-width: 190px;">
+                    <span class="badge bg-primary mb-1">${item.kategori}</span>
+                    <h6 class="fw-bold mb-1">${item.nama}</h6>
+                    <p class="small mb-1">${item.info}</p>
+                    <small class="text-secondary">Koordinat: ${item.koordinat[0]}, ${item.koordinat[1]}</small>
+                </div>
+            `);
+
+        const btn = document.createElement("button");
+        btn.className = "list-group-item list-group-item-action bg-transparent text-light border-secondary-subtle px-0 py-2 small";
+        btn.innerHTML = `<i class="bi bi-geo-alt-fill text-primary me-1"></i> ${item.nama}`;
+        btn.onclick = () => {
+          map.flyTo(item.koordinat, 16);
+          marker.openPopup();
+        };
+        daftarContainer.appendChild(btn);
+      });
+    </script>
+  </body>
+</html>
